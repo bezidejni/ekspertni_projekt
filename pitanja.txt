@@ -1,0 +1,92 @@
+// LOKACIJA
+Gdje će pas provoditi vrijeme, odnosno gdje živite?
+a) u stanu
+b) u kući s malim dvorištem
+c) u kući s velikim dvorištem
+
+Klima u mjestu gdje živite je:
+a) jako hladno zimi
+b) ni prevruće ni prehladno
+c) jako vruće ljeti
+
+Hoće li pas duže razdoblje provoditi sam u stanu ili kući?
+a) da
+b) ponekad
+c) ne
+
+// KOLIKO VRMENA IMATE ZA PSA
+Postoji li velika površina, na primjer park, gdje pas može trčati?
+a) da
+b) ne
+
+Koliko vremena ste spremni provesti vani vježbajući s psom?
+a) preko 30 minuta na dan
+b) malo vremena većinu dana
+c) malo vremena jednom tjedno
+d) ponekad
+
+Koliko vremena ste spremni provesti uređujući psa?
+a) preko 30 minuta na dan
+b) malo vremena većinu dana
+c) malo vremena jednom tjedno
+d) ponekad
+
+Želite li isključivo psa kojeg je izuzetno lako dresirati?
+a) da
+b) ne, mogu provesti koliko god vremena treba na dresiranje
+
+// PONAŠANJE
+Pas mora biti dobar oko:
+- beba i male djece
+- starije djece
+- drugih pasa
+- nepoznatih ljudi
+- nebitno
+
+Želite li da pas bude:
+- pas koji laje kako bi upozorio vlasnika
+- pas stražar koji može zapravo zaštititi vlasnika
+- lovački pas
+- nebitno
+
+// IZGLED
+Pas treba izgledati:
+- elegantno
+- slatko
+- smiješno
+- zapušteno
+- agresivno
+- prijateljski
+- nebitno
+
+Veličina psa:
+a) jako veliki
+b) veliki
+c) srednjeg rasta
+d) mali
+e) jako mali
+f) nebitno
+
+Duljina dlake
+a) jako duga
+b) duga
+c) srednja
+d) kratka
+e) jako kratka
+f) nebitno
+
+// DRUGE KARAKTERISTIKE
+Želite li psa koji se jako linja?
+a) da
+b) ne
+
+Želite li psa koji slini?
+a) da
+b) ne
+
+Koliko je bitno da pas ima minimalno utjecaja na ljude s alergijama?
+a) jako bitno
+b) bitno
+c) nebitno
+
+
