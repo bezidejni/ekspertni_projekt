@@ -126,7 +126,7 @@
    =>
    (printout t "Koja je maksimalna veličina psa koja vam odgovara?" crlf)
    (printout t "a) mala (3-10kg)" crlf)
-   (printout t "b) srednja" (10-25kg) crlf)
+   (printout t "b) srednja" (10-25kg)" crlf)
    (printout t "c) velika (25-50kg)" crlf)
    (printout t "d) ogromna (50-100kg)" crlf)
    (bind ?response (ask-question "Vaš odgovor:" a b c d))
