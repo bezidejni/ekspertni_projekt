@@ -83,7 +83,7 @@
    (printout t "a) malo (0-30min fizičke aktivnosti dnevno)" crlf)
    (printout t "b) srednje (30-60min fizičke aktivnosti dnevno)" crlf)
    (printout t "c) puno (60-120min fizičke aktivnosti dnevno)" crlf)
-   (bind ?response (ask-question "Vaš odgovor:" a b c))
+   (bind ?response (ask-question "Vaš odgovor (a/b/c):" a b c))
    (switch ?response 
       (case a then (bind ?response malo))
       (case b then (bind ?response srednje))
@@ -98,7 +98,7 @@
    (printout t "a) malo" crlf)
    (printout t "b) srednje" crlf)
    (printout t "c) puno" crlf)
-   (bind ?response (ask-question "Vaš odgovor:" a b c))
+   (bind ?response (ask-question "Vaš odgovor (a/b/c):" a b c))
    (switch ?response 
       (case a then (bind ?response malo))
       (case b then (bind ?response srednje))
@@ -113,7 +113,7 @@
    (printout t "a) malo" crlf)
    (printout t "b) srednje" crlf)
    (printout t "c) puno" crlf)
-   (bind ?response (ask-question "Vaš odgovor:" a b c))
+   (bind ?response (ask-question "Vaš odgovor (a/b/c):" a b c))
    (switch ?response 
       (case a then (bind ?response malo))
       (case b then (bind ?response srednje))
@@ -129,7 +129,7 @@
    (printout t "b) srednja (10-25kg)" crlf)
    (printout t "c) velika (25-50kg)" crlf)
    (printout t "d) ogromna (50-100kg)" crlf)
-   (bind ?response (ask-question "Vaš odgovor:" a b c d))
+   (bind ?response (ask-question "Vaš odgovor (a/b/c/d):" a b c d))
    (switch ?response 
       (case a then (bind ?response 10))
       (case b then (bind ?response 25))
