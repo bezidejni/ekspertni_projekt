@@ -75,15 +75,83 @@
    =>
    (bind ?response (yes-or-no-p "Imate li puno vremena za brigu oko dlake (češljanje i sl.) (da/ne)?"))
    (assert (zahtjevna-dlaka ?response)))
+
+(defrule GetAktivnost ""
+  (declare (salience 5))
+   =>
+   (printout t "Koliko ste fizički aktivni?" crlf)
+   (printout t "a) malo (0-30min fizičke aktivnosti dnevno)" crlf)
+   (printout t "b) srednje (30-60min fizičke aktivnosti dnevno)" crlf)
+   (printout t "c) puno (60-120min fizičke aktivnosti dnevno)" crlf)
+   (bind ?response (ask-question "Vaš odgovor:" a b c))
+   (switch ?response 
+      (case a then (bind ?response malo))
+      (case b then (bind ?response srednje))
+      (case c then (bind ?response puno))
+      (default none))
+   (assert (aktivnost ?response)))
+
+(defrule GetZaigranost ""
+  (declare (salience 5))
+   =>
+   (printout t "Koliko želite da vam pas bude zaigran?" crlf)
+   (printout t "a) malo" crlf)
+   (printout t "b) srednje" crlf)
+   (printout t "c) puno" crlf)
+   (bind ?response (ask-question "Vaš odgovor:" a b c))
+   (switch ?response 
+      (case a then (bind ?response malo))
+      (case b then (bind ?response srednje))
+      (case c then (bind ?response puno))
+      (default none))
+   (assert (zaigranost ?response)))
+
+(defrule GetPrivrzenost ""
+  (declare (salience 5))
+   =>
+   (printout t "Koliko želite da vam pas bude privržen?" crlf)
+   (printout t "a) malo" crlf)
+   (printout t "b) srednje" crlf)
+   (printout t "c) puno" crlf)
+   (bind ?response (ask-question "Vaš odgovor:" a b c))
+   (switch ?response 
+      (case a then (bind ?response malo))
+      (case b then (bind ?response srednje))
+      (case c then (bind ?response puno))
+      (default none))
+   (assert (privrzenost ?response)))
+
+(defrule GetVelicina ""
+  (declare (salience 5))
+   =>
+   (printout t "Koja je maksimalna veličina psa koja vam odgovara?" crlf)
+   (printout t "a) mala (3-10kg)" crlf)
+   (printout t "b) srednja" (10-25kg) crlf)
+   (printout t "c) velika (25-50kg)" crlf)
+   (printout t "d) ogromna (50-100kg)" crlf)
+   (bind ?response (ask-question "Vaš odgovor:" a b c d))
+   (switch ?response 
+      (case a then (bind ?response 10))
+      (case b then (bind ?response 25))
+      (case c then (bind ?response 50))
+      (case d then (bind ?response 100))
+      (default none))
+   (assert (velicina ?response)))
+
 ;;;****************************
 ;;;* PSI *
 ;;;****************************
 
 (defrule AustralskiCattleDog ""
+   (aktivnost puno)
+   (zaigranost puno)
+   (privrzenost srednje)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (drugi-ljubimci ne)
    (stranci ne)
+   (velicina ?vel)
+   (test (< 21 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Australian Cattle Dog" crlf)
@@ -91,9 +159,14 @@
    (assert (breed-found australian-cattle-dog)))
 
 (defrule AustralianShephard ""
+   (aktivnost puno)
+   (zaigranost puno)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (stranci ne)
+   (velicina ?vel)
+   (test (< 30 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Australian Shephard" crlf)
@@ -101,11 +174,16 @@
    (assert (breed-found australian-shephard)))
 
 (defrule BorderCollie ""
+   (aktivnost puno)
+   (zaigranost puno)
+   (privrzenost srednje)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (drugi-ljubimci ne)
    (stranci ne)
    (zastitnicki ne)
+   (velicina ?vel)
+   (test (< 21 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Border Collie" crlf)
@@ -113,9 +191,14 @@
    (assert (breed-found border-collie)))
 
 (defrule CardiganWelshCorgi ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost srednje)
+   (privrzenost srednje)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (drugi-psi ne)
+   (velicina ?vel)
+   (test (< 17 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Cardigan Welsh Corgi" crlf)
@@ -124,10 +207,15 @@
 
 
 (defrule AiredaleTerrier ""
+   (aktivnost srednje|puno)
+   (zaigranost puno)
+   (privrzenost srednje)
    (prethodno-iskustvo da)
    (drugi-psi ne)
    (drugi-ljubimci ne)
    (zahtjevna-dlaka da)
+   (velicina ?vel)
+   (test (< 27 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Airedale Terrier" crlf)
@@ -136,10 +224,15 @@
 
 
 (defrule Dalmatian ""
+   (aktivnost srednje|puno)
+   (zaigranost srednje)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (podnosi-hladnocu ne)
+   (velicina ?vel)
+   (test (< 29 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Dalmatian" crlf)
@@ -148,10 +241,15 @@
 
 
 (defrule EnglishSpringerSpaniel ""
+   (aktivnost puno)
+   (zaigranost puno)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (zahtjevna-dlaka da)
+   (velicina ?vel)
+   (test (< 22 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: English Springer Spaniel" crlf)
@@ -159,12 +257,17 @@
    (assert (breed-found english-springer-spaniel)))
 
 (defrule MiniaturePinscher ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost puno)
+   (privrzenost srednje)
    (linjanje-bitno ne)
    (drugi-psi ne)
    (drugi-ljubimci ne)
    (stranci ne)
    (zastitnicki ne)
    (podnosi-hladnocu ne)
+   (velicina ?vel)
+   (test (< 5 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Miniature Pinscher" crlf)
@@ -173,8 +276,13 @@
 
 
 (defrule Beagle ""
+   (aktivnost srednje|puno)
+   (zaigranost srednje)
+   (privrzenost puno)
    (linjanje-bitno ne)
    (zastitnicki ne)
+   (velicina ?vel)
+   (test (< 13 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Beagle" crlf)
@@ -183,10 +291,15 @@
 
 
 (defrule BerneseMountainDog ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost malo)
+   (privrzenost srednje)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (podnosi-vrucinu ne)
+   (velicina ?vel)
+   (test (< 55 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Bernese Mountain Dog" crlf)
@@ -195,11 +308,16 @@
 
 
 (defrule Boxer ""
+   (aktivnost srednje|puno)
+   (zaigranost puno)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (podnosi-hladnocu ne)
    (podnosi-vrucinu ne)
+   (velicina ?vel)
+   (test (< 36 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Boxer" crlf)
@@ -208,10 +326,15 @@
 
 
 (defrule Collie ""
+   (aktivnost srednje|puno)
+   (zaigranost srednje)
+   (privrzenost srednje)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (zahtjevna-dlaka da)
+   (velicina ?vel)
+   (test (< 34 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Collie" crlf)
@@ -220,9 +343,14 @@
 
 
 (defrule GoldenRetriever ""
+   (aktivnost srednje|puno)
+   (zaigranost puno)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
+   (velicina ?vel)
+   (test (< 34 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Golden Retriever" crlf)
@@ -231,8 +359,13 @@
 
 
 (defrule PembrokeWelshCorgi ""
+   (aktivnost srednje|puno)
+   (zaigranost srednje)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
+   (velicina ?vel)
+   (test (< 13 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Pembroke Welsh Corgi" crlf)
@@ -241,10 +374,15 @@
 
 
 (defrule GermanShepherd ""
+   (aktivnost puno)
+   (zaigranost malo)
+   (privrzenost srednje)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (drugi-psi ne)
    (stranci ne)
+   (velicina ?vel)
+   (test (< 43 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: German Shepherd" crlf)
@@ -253,11 +391,16 @@
 
 
 (defrule ShetlandSheepdog ""
+   (aktivnost srednje|puno)
+   (zaigranost srednje)
+   (privrzenost srednje)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (stranci ne)
    (zahtjevna-dlaka da)
+   (velicina ?vel)
+   (test (< 10 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Shetland Sheepdog" crlf)
@@ -266,9 +409,14 @@
 
 
 (defrule BelgianSheepdog ""
+   (aktivnost puno)
+   (zaigranost puno)
+   (privrzenost srednje)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (stranci ne)
+   (velicina ?vel)
+   (test (< 34 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Belgian Sheepdog" crlf)
@@ -277,9 +425,14 @@
 
 
 (defrule Whippet ""
+   (aktivnost srednje|puno)
+   (zaigranost srednje)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (zastitnicki ne)
    (podnosi-hladnocu ne)
+   (velicina ?vel)
+   (test (< 18 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Whippet" crlf)
@@ -288,12 +441,17 @@
 
 
 (defrule Greyhound ""
+   (aktivnost srednje|puno)
+   (zaigranost srednje)
+   (privrzenost srednje)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (drugi-psi ne)
    (podnosi-hladnocu ne)
    (podnosi-vrucinu ne)
+   (velicina ?vel)
+   (test (< 32 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Greyhound" crlf)
@@ -302,11 +460,16 @@
 
 
 (defrule RhodesianRidgeback ""
+   (aktivnost srednje|puno)
+   (zaigranost srednje)
+   (privrzenost srednje)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (drugi-psi ne)
    (drugi-ljubimci ne)
    (stranci ne)
+   (velicina ?vel)
+   (test (< 39 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Rhodesian Ridgeback" crlf)
@@ -315,10 +478,15 @@
 
 
 (defrule Dachshund ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost srednje)
+   (privrzenost srednje)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (drugi-ljubimci ne)
    (stranci ne)
+   (velicina ?vel)
+   (test (< 15 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Dachsund" crlf)
@@ -327,10 +495,15 @@
 
 
 (defrule BichonFrise ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost puno)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (zahtjevna-dlaka da)
+   (velicina ?vel)
+   (test (< 7 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Bichon Frise" crlf)
@@ -339,12 +512,17 @@
 
 
 (defrule YorkshireTerrier ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost puno)
+   (privrzenost srednje)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (podnosi-hladnocu ne)
    (drugi-psi ne)
    (drugi-ljubimci ne)
    (zahtjevna-dlaka da)
+   (velicina ?vel)
+   (test (< 4 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Yorkshire Terrier" crlf)
@@ -353,8 +531,13 @@
 
 
 (defrule Poodle ""
+   (aktivnost puno)
+   (zaigranost puno)
+   (privrzenost srednje)
    (prethodno-iskustvo da)
    (zahtjevna-dlaka da)
+   (velicina ?vel)
+   (test (< 29 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Poodle" crlf)
@@ -363,9 +546,14 @@
 
 
 (defrule Bulldog ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost puno)
+   (privrzenost puno)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (drugi-psi ne)
+   (velicina ?vel)
+   (test (< 23 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Bulldog" crlf)
@@ -374,10 +562,15 @@
 
 
 (defrule Bullmastiff ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost malo)
+   (privrzenost srednje)
    (linjanje-bitno ne)
    (drugi-psi ne)
    (stranci ne)
    (podnosi-vrucinu ne)
+   (velicina ?vel)
+   (test (< 59 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Bullmastiff" crlf)
@@ -386,11 +579,16 @@
 
 
 (defrule Pug ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost puno)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (stranci ne)
    (podnosi-vrucinu ne)
+   (velicina ?vel)
+   (test (< 8 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Pug" crlf)
@@ -399,10 +597,15 @@
 
 
 (defrule Mastiff ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost malo)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (stranci ne)
    (podnosi-vrucinu ne)
+   (velicina ?vel)
+   (test (< 86 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Mastiff" crlf)
@@ -411,11 +614,16 @@
 
 
 (defrule CavalierKingCharlesSpaniel ""
+   (aktivnost srednje|puno)
+   (zaigranost puno)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (drugi-psi ne)
    (zastitnicki ne)
    (podnosi-vrucinu ne)
+   (velicina ?vel)
+   (test (< 8 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Cavalier King Charles Spaniel" crlf)
@@ -424,11 +632,16 @@
 
 
 (defrule Chihuahua ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost malo)
+   (privrzenost malo)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (drugi-psi ne)
    (stranci ne)
    (podnosi-hladnocu ne)
+   (velicina ?vel)
+   (test (< 3 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Chihuahua" crlf)
@@ -437,10 +650,15 @@
 
 
 (defrule Maltese ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost puno)
+   (privrzenost srednje)
    (prethodno-iskustvo da)
    (zastitnicki ne)
    (stranci ne)
    (podnosi-vrucinu ne)
+   (velicina ?vel)
+   (test (< 4 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Maltese" crlf)
@@ -449,11 +667,16 @@
 
 
 (defrule Pekinese ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost malo)
+   (privrzenost malo)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (stranci ne)
    (podnosi-vrucinu ne)
    (zahtjevna-dlaka da)
+   (velicina ?vel)
+   (test (< 4 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Pekinese" crlf)
@@ -462,11 +685,16 @@
 
 
 (defrule AlaskanMalamute ""
+   (aktivnost puno)
+   (zaigranost srednje)
+   (privrzenost puno)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (drugi-psi ne)
    (drugi-ljubimci ne)
    (podnosi-vrucinu ne)
+   (velicina ?vel)
+   (test (< 39 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Alaskan Malamute" crlf)
@@ -475,10 +703,15 @@
 
 
 (defrule DobermanPinscher ""
+   (aktivnost srednje|puno)
+   (zaigranost srednje)
+   (privrzenost srednje)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (drugi-psi ne)
    (stranci ne)
+   (velicina ?vel)
+   (test (< 41 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Doberman Pinscher" crlf)
@@ -487,10 +720,15 @@
 
 
 (defrule SaintBernard ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost srednje)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (podnosi-vrucinu ne)
+   (velicina ?vel)
+   (test (< 91 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Saint Bernard" crlf)
@@ -499,11 +737,16 @@
 
 
 (defrule TibetanTerrier ""
+   (aktivnost srednje|puno)
+   (zaigranost srednje)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (stranci ne)
    (zahtjevna-dlaka da)
+   (velicina ?vel)
+   (test (< 11 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Tibetian Terrier" crlf)
@@ -512,11 +755,16 @@
 
 
 (defrule AmericanWaterSpaniel ""
+   (aktivnost srednje|puno)
+   (zaigranost puno)
+   (privrzenost srednje)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (drugi-psi ne)
    (stranci ne)
+   (velicina ?vel)
+   (test (< 20 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: American Water Spaniel" crlf)
@@ -525,10 +773,15 @@
 
 
 (defrule IrishTerrier ""
+   (aktivnost srednje|puno)
+   (zaigranost puno)
+   (privrzenost malo)
    (drugi-psi ne)
    (drugi-ljubimci ne)
    (stranci ne)
    (zahtjevna-dlaka da)
+   (velicina ?vel)
+   (test (< 12 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Irish Terrier" crlf)
@@ -537,11 +790,16 @@
 
 
 (defrule BostonTerrier ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost srednje)
+   (privrzenost srednje)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (podnosi-vrucinu ne)
    (podnosi-hladnocu ne)
+   (velicina ?vel)
+   (test (< 11 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Boston Terrier" crlf)
@@ -550,10 +808,15 @@
 
 
 (defrule ChowChow ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost malo)
+   (privrzenost malo)
    (linjanje-bitno ne)
    (drugi-psi ne)
    (stranci ne)
    (podnosi-vrucinu ne)
+   (velicina ?vel)
+   (test (< 32 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Chow Chow" crlf)
@@ -561,11 +824,15 @@
    (assert (breed-found chow-chow)))
 
 
-(defrule ChinesheSharPei ""
+(defrule ChineseSharPei ""
+   (aktivnost srednje|puno)
+   (zaigranost malo)
+   (privrzenost malo)
    (linjanje-bitno ne)
    (drugi-psi ne)
    (stranci ne)
-
+   (velicina ?vel)
+   (test (< 27 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Chinese Shar-Pei" crlf)
@@ -574,9 +841,14 @@
 
 
 (defrule IrishSetter ""
+   (aktivnost puno)
+   (zaigranost puno)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
+   (velicina ?vel)
+   (test (< 32 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Irish Setter" crlf)
@@ -585,9 +857,14 @@
 
 
 (defrule LabradorRetriever ""
+   (aktivnost srednje|puno)
+   (zaigranost puno)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
+   (velicina ?vel)
+   (test (< 36 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Labrador Retriever" crlf)
@@ -596,10 +873,15 @@
 
 
 (defrule Papillon ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost puno)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (podnosi-hladnocu ne)
+   (velicina ?vel)
+   (test (< 4 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Papillon" crlf)
@@ -608,10 +890,15 @@
 
 
 (defrule ShihTzu ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost puno)
+   (privrzenost puno)
    (zastitnicki ne)
    (zahtjevna-dlaka da)
    (podnosi-vrucinu ne)
    (podnosi-hladnocu ne)
+   (velicina ?vel)
+   (test (< 8 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Shih Tzu" crlf)
@@ -620,11 +907,16 @@
 
 
 (defrule ShibaInu ""
+   (aktivnost srednje|puno)
+   (zaigranost srednje)
+   (privrzenost srednje)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (drugi-psi ne)
    (drugi-ljubimci ne)
    (podnosi-vrucinu ne)
+   (velicina ?vel)
+   (test (< 10 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Shiba Inu" crlf)
@@ -633,9 +925,14 @@
 
 
 (defrule EnglishSetter ""
+   (aktivnost puno)
+   (zaigranost srednje)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
+   (velicina ?vel)
+   (test (< 29 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: English Setter" crlf)
@@ -644,9 +941,14 @@
 
 
 (defrule Brittany ""
+   (aktivnost puno)
+   (zaigranost puno)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
+   (velicina ?vel)
+   (test (< 18 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Brittany" crlf)
@@ -655,10 +957,15 @@
 
 
 (defrule Viszla ""
+   (aktivnost srednje|puno)
+   (zaigranost puno)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (podnosi-hladnocu ne)
+   (velicina ?vel)
+   (test (< 29 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Viszla" crlf)
@@ -667,8 +974,13 @@
 
 
 (defrule BullTerrier ""
+   (aktivnost srednje|puno)
+   (zaigranost puno)
+   (privrzenost srednje)
    (linjanje-bitno ne)
    (drugi-psi ne)
+   (velicina ?vel)
+   (test (< 32 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Bull Terrier" crlf)
@@ -677,10 +989,15 @@
 
 
 (defrule SoftCoatedWheatenTerrier ""
+   (aktivnost srednje|puno)
+   (zaigranost puno)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (zastitnicki ne)
    (zahtjevna-dlaka da)
    (podnosi-vrucinu ne)
+   (velicina ?vel)
+   (test (< 18 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Soft Coated Wheaten Terrier" crlf)
@@ -689,9 +1006,14 @@
 
 
 (defrule WestHighlandWhiteTerrier ""
+   (aktivnost srednje|puno)
+   (zaigranost srednje)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (zastitnicki ne)
    (zahtjevna-dlaka da)
+   (velicina ?vel)
+   (test (< 9 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: West Highland White Terrier" crlf)
@@ -700,10 +1022,15 @@
 
 
 (defrule Pomeranian ""
+   (aktivnost malo|srednje|puno)
+   (zaigranost puno)
+   (privrzenost malo)
    (linjanje-bitno ne)
    (drugi-psi ne)
    (stranci ne)
    (zastitnicki ne)
+   (velicina ?vel)
+   (test (< 3 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Pomeranian" crlf)
@@ -712,10 +1039,15 @@
 
 
 (defrule Akita ""
+   (aktivnost srednje|puno)
+   (zaigranost srednje)
+   (privrzenost srednje)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (stranci ne)
    (podnosi-vrucinu ne)
+   (velicina ?vel)
+   (test (< 59 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Akita" crlf)
@@ -724,10 +1056,15 @@
 
 
 (defrule BlackRussianTerrier ""
+   (aktivnost srednje|puno)
+   (zaigranost malo)
+   (privrzenost puno)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (stranci ne)
    (podnosi-vrucinu ne)
+   (velicina ?vel)
+   (test (< 66 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Black Russian Terrier" crlf)
@@ -736,10 +1073,15 @@
 
 
 (defrule Rottweiler ""
+   (aktivnost srednje|puno)
+   (zaigranost malo)
+   (privrzenost malo)
    (prethodno-iskustvo da)
    (linjanje-bitno ne)
    (stranci ne)
    (podnosi-vrucinu ne)
+   (velicina ?vel)
+   (test (< 60 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Rottweiler" crlf)
@@ -748,9 +1090,14 @@
 
 
 (defrule SiberianHusky ""
+   (aktivnost puno)
+   (zaigranost puno)
+   (privrzenost puno)
    (linjanje-bitno ne)
    (zastitnicki ne)
    (podnosi-vrucinu ne)
+   (velicina ?vel)
+   (test (< 21 ?vel))
    =>
    (printout t crlf)
    (printout t "Naziv pasmine: Siberian Husky" crlf)
